@@ -4,6 +4,7 @@ import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
   AiOutlineSave,
+  AiOutlineFileText,
 } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
@@ -11,6 +12,7 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 
 function App() {
   const [markdown, setMarkdown] = useState("");
+  const [filename, setFilename] = useState("markdown");
   const [showMarkdown, setShowMarkdown] = useState(true);
 
   function handleSave() {
@@ -19,7 +21,7 @@ function App() {
       "href",
       "data:text/plain;charset=utf-8," + encodeURIComponent(markdown)
     );
-    element.setAttribute("download", "markdown.md");
+    element.setAttribute("download", filename || "markdown.md");
 
     element.style.display = "none";
     document.body.appendChild(element);
@@ -31,13 +33,19 @@ function App() {
 
   return (
     <div className="bg-zinc-800 h-screen max-h-screen dark:text-zinc-100">
-      <header className="flex justify-end gap-4 p-4 h-20 bg-[#2b2d31]">
-        <button
-          className="hover:bg-zinc-900 flex items-center justify-center w-10 h-10 rounded-full"
-          onClick={() => setMarkdown("")}
-        >
-          <BsTrash className="text-zinc-400" size={20} />
-        </button>
+      <header className="flex  gap-4 p-4 h-20 bg-[#2b2d31]">
+        <div className="flex gap-2 items-center">
+          <AiOutlineFileText size={20} />
+          <label className="flex flex-col ">
+            <span className="text-sm">filename</span>
+            <input
+              className="bg-transparent border-b border-b-zinc-400 hover:border-b-blue-600 outline-none"
+              type="text"
+              value={filename}
+              onChange={({ target }) => setFilename(target.value)}
+            />
+          </label>
+        </div>
 
         <button
           className="hover:bg-blue-900 flex items-center gap-2 text-left px-6 h-10 rounded-md bg-blue-600"
@@ -45,6 +53,13 @@ function App() {
         >
           <AiOutlineSave size={20} />
           <span>Save</span>
+        </button>
+
+        <button
+          className="hover:bg-zinc-900 flex items-center justify-center w-10 h-10 rounded-full"
+          onClick={() => setMarkdown("")}
+        >
+          <BsTrash className="text-zinc-400" size={20} />
         </button>
       </header>
       <main className="h-[calc(100vh-5rem)] max-h-[calc(100vh-5rem)]   ">
