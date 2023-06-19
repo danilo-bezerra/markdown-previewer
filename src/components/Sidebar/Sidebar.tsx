@@ -17,15 +17,20 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`fixed top-0 left-0 w-screen md:w-80 h-screen p-6  z-40 transition-all bg-[#1d1f22]
-      ${isOpen ? " left-0" : "-left-[100vw] md:-left-80"}
+      className={`fixed top-0 left-0 h-screen p-6  z-40 transition-all bg-[#1d1f22]
+      ${isOpen ? "w-screen md:w-80  left-0 " : "-left-[100%] md:-left-80 "}
       `}
     >
       <div className="flex justify-end mb-6">
-        <IconButton className="" icon={AiOutlineClose} onClick={onClose} />
+        <IconButton
+          className=""
+          iconSize={24}
+          icon={AiOutlineClose}
+          onClick={onClose}
+        />
       </div>
       <Button onClick={createMarkdown} fullWidth>
-        Novo Markdown
+        Novo Markdown {isOpen.toString()}
       </Button>
 
       <h2 className=" text-sm mt-6 font-semibold ">Salvos:</h2>

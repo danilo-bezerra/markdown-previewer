@@ -59,7 +59,7 @@ function App() {
   }, [selectedMarkdown]);
 
   return (
-    <div className="bg-zinc-800 h-screen max-h-screen dark:text-zinc-100">
+    <div className="bg-zinc-800 h-screen max-h-screen dark:text-zinc-100 overflow-x-hidden">
       <Sidebar />
       <header className="flex justify-between items-center  gap-4 p-4 h-20 bg-[#2b2d31]">
         <div className="flex gap-2 items-center">
