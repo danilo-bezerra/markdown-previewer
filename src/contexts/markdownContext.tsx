@@ -18,13 +18,13 @@ export const MarkdownContext = createContext<MarkdownContextProps>({
   createMarkdown: () => {
     return;
   },
-  selectMarkdown: (markdown: IMarkdown) => {
+  selectMarkdown: () => {
     return;
   },
-  updateMarkdown: (markdown: IMarkdown) => {
+  updateMarkdown: () => {
     return;
   },
-  deleteMarkdown: (markdown: IMarkdown) => {
+  deleteMarkdown: () => {
     return;
   },
 });
