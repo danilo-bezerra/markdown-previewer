@@ -30,7 +30,7 @@ export default function Sidebar() {
         />
       </div>
       <Button onClick={createMarkdown} fullWidth>
-        Novo Markdown {isOpen.toString()}
+        Novo Markdown
       </Button>
 
       <h2 className=" text-sm mt-6 font-semibold ">Salvos:</h2>
