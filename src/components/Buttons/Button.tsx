@@ -12,7 +12,7 @@ type Props = DetailedHTMLProps<
   HTMLButtonElement
 > & {
   variant?: keyof typeof variants;
-  label: string;
+
   icon?: IconType;
   fullWidth?: boolean;
 };
@@ -20,21 +20,21 @@ type Props = DetailedHTMLProps<
 export default function Button({
   variant = "default",
   icon: Icon,
-  label,
+  children,
   fullWidth,
   ...props
 }: Props) {
   return (
     <button
       className={`
-        flex items-center gap-2 h-10 px-6 rounded-md transition-colors
+        flex items-center justify-center gap-2 h-10 w-10 md:w-auto md:px-6 rounded-md transition-colors
         ${variants[variant]}
         ${fullWidth ? "w-full" : ""}
     `}
       {...props}
     >
       {Icon && <Icon size={20} />}
-      {label}
+      {children}
     </button>
   );
 }

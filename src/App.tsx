@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   AiOutlineEye,
@@ -19,7 +19,7 @@ function App() {
   const [showMarkdown, setShowMarkdown] = useState(true);
 
   function handleSave() {
-    return;
+    localStorage.setItem("markdown", markdown);
   }
 
   function handleDownload() {
@@ -38,15 +38,22 @@ function App() {
     document.body.removeChild(element);
   }
 
+  useEffect(() => {
+    const localMarkdown = localStorage.getItem("markdown");
+    if (localMarkdown) {
+      setMarkdown(localMarkdown);
+    }
+  }, []);
+
   return (
     <div className="bg-zinc-800 h-screen max-h-screen dark:text-zinc-100">
-      <header className="flex justify-between  gap-4 p-4 h-20 bg-[#2b2d31]">
+      <header className="flex justify-between items-center  gap-4 p-4 h-20 bg-[#2b2d31]">
         <div className="flex gap-2 items-center">
           <AiOutlineFileText size={20} />
           <label className="flex flex-col ">
             <span className="text-sm">filename</span>
             <input
-              className="bg-transparent border-b border-b-zinc-400 hover:border-b-blue-600 outline-none"
+              className="bg-transparent border-b border-b-zinc-400 hover:border-b-blue-600 outline-none w-32 md:w-auto"
               type="text"
               value={filename}
               onChange={({ target }) => setFilename(target.value)}
@@ -63,17 +70,19 @@ function App() {
             onClick={handleDownload}
           />
 
-          <Button label="Save" icon={AiOutlineSave} onClick={handleSave} />
+          <Button icon={AiOutlineSave} onClick={handleSave}>
+            <span className="hidden md:block">Save</span>
+          </Button>
         </div>
       </header>
       <main className="h-[calc(100vh-5rem)] max-h-[calc(100vh-5rem)]   ">
         <section
-          className={`relative grid  h-full ${
+          className={`relative grid  h-full bg-[#151619] ${
             showMarkdown ? "md:grid-cols-2" : "grid-cols-1"
           }`}
         >
           <div
-            className={` overflow-y-hidden md:border-r border-r-gray-400 bg-[#2b2d31] ${
+            className={` overflow-y-hidden md:border-r border-r-gray-400 bg-[#151619] ${
               showMarkdown
                 ? "fixed  z-20 top-20 left-0 right-0 bottom-0 md:z-auto md:top-auto  md:block md:relative md:bg-transparent"
                 : "hidden relative"
