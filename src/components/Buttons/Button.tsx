@@ -27,9 +27,9 @@ export default function Button({
   return (
     <button
       className={`
-        flex items-center justify-center gap-2 h-10 w-10 md:w-auto md:px-6 rounded-md transition-colors
+        flex items-center justify-center gap-2 h-10 text-sm md:px-6 rounded-md transition-colors
         ${variants[variant]}
-        ${fullWidth ? "w-full" : ""}
+        ${fullWidth ? "w-full" : "w-10 md:w-auto"}
     `}
       {...props}
     >

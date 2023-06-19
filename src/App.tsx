@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import {
   AiOutlineEye,
@@ -6,20 +6,35 @@ import {
   AiOutlineSave,
   AiOutlineFileText,
   AiOutlineDownload,
+  AiOutlineMenu,
+  AiOutlineClose,
 } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import Button from "./components/Buttons/Button";
 import IconButton from "./components/Buttons/IconButton";
+import Sidebar from "./components/Sidebar/Sidebar";
+import useSidebar from "./hooks/useSidebar";
+import { MarkdownContext } from "./contexts/markdownContext";
 
 function App() {
   const [markdown, setMarkdown] = useState("");
-  const [filename, setFilename] = useState("markdown");
+  const [filename, setFilename] = useState("");
   const [showMarkdown, setShowMarkdown] = useState(true);
 
+  const {
+    selected: selectedMarkdown,
+    deleteMarkdown,
+    updateMarkdown,
+  } = useContext(MarkdownContext);
+
+  const { isOpen, onOpen } = useSidebar();
+
   function handleSave() {
-    localStorage.setItem("markdown", markdown);
+    if (selectedMarkdown) {
+      updateMarkdown({ ...selectedMarkdown, markdown, filename });
+    }
   }
 
   function handleDownload() {
@@ -28,7 +43,7 @@ function App() {
       "href",
       "data:text/plain;charset=utf-8," + encodeURIComponent(markdown)
     );
-    element.setAttribute("download", filename || "markdown.md");
+    element.setAttribute("download", `${filename}.md` || "markdown.md");
 
     element.style.display = "none";
     document.body.appendChild(element);
@@ -39,19 +54,23 @@ function App() {
   }
 
   useEffect(() => {
-    const localMarkdown = localStorage.getItem("markdown");
-    if (localMarkdown) {
-      setMarkdown(localMarkdown);
-    }
-  }, []);
+    setFilename(selectedMarkdown?.filename || "");
+    setMarkdown(selectedMarkdown?.markdown || "");
+  }, [selectedMarkdown]);
 
   return (
     <div className="bg-zinc-800 h-screen max-h-screen dark:text-zinc-100">
+      <Sidebar />
       <header className="flex justify-between items-center  gap-4 p-4 h-20 bg-[#2b2d31]">
         <div className="flex gap-2 items-center">
+          <IconButton
+            icon={isOpen ? AiOutlineClose : AiOutlineMenu}
+            onClick={onOpen}
+          />
+
           <AiOutlineFileText size={20} />
           <label className="flex flex-col ">
-            <span className="text-sm">filename</span>
+            <span className="text-sm text-zinc-300">nome do arquivo</span>
             <input
               className="bg-transparent border-b border-b-zinc-400 hover:border-b-blue-600 outline-none w-32 md:w-auto"
               type="text"
@@ -60,20 +79,24 @@ function App() {
             />
           </label>
         </div>
+        {selectedMarkdown && (
+          <div className="flex gap-3">
+            <IconButton
+              icon={BsTrash}
+              onClick={() => deleteMarkdown(selectedMarkdown)}
+            />
 
-        <div className="flex gap-3">
-          <IconButton icon={BsTrash} onClick={() => setMarkdown("")} />
+            <IconButton
+              icon={AiOutlineDownload}
+              iconSize={24}
+              onClick={handleDownload}
+            />
 
-          <IconButton
-            icon={AiOutlineDownload}
-            iconSize={24}
-            onClick={handleDownload}
-          />
-
-          <Button icon={AiOutlineSave} onClick={handleSave}>
-            <span className="hidden md:block">Save</span>
-          </Button>
-        </div>
+            <Button icon={AiOutlineSave} onClick={handleSave}>
+              <span className="hidden md:block">Salvar</span>
+            </Button>
+          </div>
+        )}
       </header>
       <main className="h-[calc(100vh-5rem)] max-h-[calc(100vh-5rem)]   ">
         <section
@@ -114,7 +137,7 @@ function App() {
           `}
           >
             <header className="sticky top-0 flex items-center justify-between p-4 text-sm dark:bg-[#1d1f22] dark:text-gray-400 font-thin">
-              PREVIEW
+              PRÉ-VISUALIZAÇÃO
               <button
                 onClick={() => setShowMarkdown((v) => !v)}
                 className="z-30"
