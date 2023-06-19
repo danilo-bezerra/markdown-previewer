@@ -5,10 +5,13 @@ import {
   AiOutlineEyeInvisible,
   AiOutlineSave,
   AiOutlineFileText,
+  AiOutlineDownload,
 } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import Button from "./components/Buttons/Button";
+import IconButton from "./components/Buttons/IconButton";
 
 function App() {
   const [markdown, setMarkdown] = useState("");
@@ -16,6 +19,10 @@ function App() {
   const [showMarkdown, setShowMarkdown] = useState(true);
 
   function handleSave() {
+    return;
+  }
+
+  function handleDownload() {
     const element = document.createElement("a");
     element.setAttribute(
       "href",
@@ -33,7 +40,7 @@ function App() {
 
   return (
     <div className="bg-zinc-800 h-screen max-h-screen dark:text-zinc-100">
-      <header className="flex  gap-4 p-4 h-20 bg-[#2b2d31]">
+      <header className="flex justify-between  gap-4 p-4 h-20 bg-[#2b2d31]">
         <div className="flex gap-2 items-center">
           <AiOutlineFileText size={20} />
           <label className="flex flex-col ">
@@ -47,34 +54,43 @@ function App() {
           </label>
         </div>
 
-        <button
-          className="hover:bg-blue-900 flex items-center gap-2 text-left px-6 h-10 rounded-md bg-blue-600"
-          onClick={handleSave}
-        >
-          <AiOutlineSave size={20} />
-          <span>Save</span>
-        </button>
+        <div className="flex gap-3">
+          <IconButton icon={BsTrash} onClick={() => setMarkdown("")} />
 
-        <button
-          className="hover:bg-zinc-900 flex items-center justify-center w-10 h-10 rounded-full"
-          onClick={() => setMarkdown("")}
-        >
-          <BsTrash className="text-zinc-400" size={20} />
-        </button>
+          <IconButton
+            icon={AiOutlineDownload}
+            iconSize={24}
+            onClick={handleDownload}
+          />
+
+          <Button label="Save" icon={AiOutlineSave} onClick={handleSave} />
+        </div>
       </header>
       <main className="h-[calc(100vh-5rem)] max-h-[calc(100vh-5rem)]   ">
         <section
-          className={`relative grid   h-full ${
-            showMarkdown ? "grid-cols-2" : "grid-cols-1"
+          className={`relative grid  h-full ${
+            showMarkdown ? "md:grid-cols-2" : "grid-cols-1"
           }`}
         >
           <div
-            className={`relative  overflow-y-hidden border-r border-r-gray-400 ${
-              showMarkdown ? "" : " hidden"
+            className={` overflow-y-hidden md:border-r border-r-gray-400 bg-[#2b2d31] ${
+              showMarkdown
+                ? "fixed  z-20 top-20 left-0 right-0 bottom-0 md:z-auto md:top-auto  md:block md:relative md:bg-transparent"
+                : "hidden relative"
             }`}
           >
-            <header className="sticky top-0 p-4  text-sm dark:bg-[#1d1f22] dark:text-gray-400 font-thin">
+            <header className="sticky top-0 p-4 flex justify-between items-center text-sm dark:bg-[#1d1f22] dark:text-gray-400 font-thin">
               MARKDOWN
+              <button
+                onClick={() => setShowMarkdown((v) => !v)}
+                className={`md:hidden`}
+              >
+                {showMarkdown ? (
+                  <AiOutlineEyeInvisible size={20} />
+                ) : (
+                  <AiOutlineEye size={20} />
+                )}
+              </button>
             </header>
             <textarea
               value={markdown}
@@ -83,10 +99,17 @@ function App() {
               spellCheck={false}
             ></textarea>
           </div>
-          <div className="relative   overflow-y-scroll no-scrollbar">
+          <div
+            className={`relative   overflow-y-scroll no-scrollbar 
+            ${showMarkdown ? "" : ""}
+          `}
+          >
             <header className="sticky top-0 flex items-center justify-between p-4 text-sm dark:bg-[#1d1f22] dark:text-gray-400 font-thin">
               PREVIEW
-              <button onClick={() => setShowMarkdown((v) => !v)}>
+              <button
+                onClick={() => setShowMarkdown((v) => !v)}
+                className="z-30"
+              >
                 {showMarkdown ? (
                   <AiOutlineEyeInvisible size={20} />
                 ) : (
