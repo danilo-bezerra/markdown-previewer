@@ -18,7 +18,11 @@ export default function Sidebar() {
   return (
     <aside
       className={`fixed top-0 left-0 h-screen p-6  z-40 transition-all bg-[#1d1f22]
-      ${isOpen ? "w-screen md:w-80  left-0 " : "-left-[100vw]  md:-left-80 "}
+      ${
+        isOpen
+          ? "w-screen md:w-80  left-0 "
+          : "-left-[100vw]  md:-left-80 mobile-sidebar "
+      }
       `}
     >
       <div className="flex justify-end mb-6">
