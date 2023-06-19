@@ -1,15 +1,52 @@
 import { useState } from "react";
 
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import {
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineSave,
+} from "react-icons/ai";
+import { BsTrash } from "react-icons/bs";
+
 import MarkdownPreview from "@uiw/react-markdown-preview";
 
 function App() {
   const [markdown, setMarkdown] = useState("");
   const [showMarkdown, setShowMarkdown] = useState(true);
 
+  function handleSave() {
+    const element = document.createElement("a");
+    element.setAttribute(
+      "href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(markdown)
+    );
+    element.setAttribute("download", "markdown.md");
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
   return (
     <div className="bg-zinc-800 h-screen max-h-screen dark:text-zinc-100">
-      <header className="h-20 bg-[#2b2d31]"></header>
+      <header className="flex justify-end gap-4 p-4 h-20 bg-[#2b2d31]">
+        <button
+          className="hover:bg-zinc-900 flex items-center justify-center w-10 h-10 rounded-full"
+          onClick={() => setMarkdown("")}
+        >
+          <BsTrash className="text-zinc-400" size={20} />
+        </button>
+
+        <button
+          className="hover:bg-blue-900 flex items-center gap-2 text-left px-6 h-10 rounded-md bg-blue-600"
+          onClick={handleSave}
+        >
+          <AiOutlineSave size={20} />
+          <span>Save</span>
+        </button>
+      </header>
       <main className="h-[calc(100vh-5rem)] max-h-[calc(100vh-5rem)]   ">
         <section
           className={`relative grid   h-full ${
