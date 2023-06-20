@@ -5,7 +5,7 @@ import Button from "../Buttons/Button";
 
 import { AiOutlineClose } from "react-icons/ai";
 import IconButton from "../Buttons/IconButton";
-import MarkdownItem from "./MarkdownItem";
+import SidebarItem from "./SidebarItem";
 
 export default function Sidebar() {
   const {
@@ -26,12 +26,7 @@ export default function Sidebar() {
       `}
     >
       <div className="flex justify-end mb-6">
-        <IconButton
-          className=""
-          iconSize={24}
-          icon={AiOutlineClose}
-          onClick={onClose}
-        />
+        <IconButton iconSize={24} icon={AiOutlineClose} onClick={onClose} />
       </div>
       <Button onClick={createMarkdown} fullWidth>
         Novo Markdown
@@ -40,7 +35,7 @@ export default function Sidebar() {
       <h2 className=" text-sm mt-6 font-semibold ">Salvos:</h2>
       <ul className="my-2  h-[60vh] max-h-[60vh] overflow-y-scroll">
         {markdownList.map((m) => (
-          <MarkdownItem
+          <SidebarItem
             key={m.id}
             markdown={m}
             selected={selectedMarkdown?.id == m.id}

@@ -9,18 +9,18 @@ type Props = {
   selected?: boolean;
 };
 
-export default function MarkdownItem({ markdown, selected }: Props) {
+export default function SidebarItem({ markdown, selected }: Props) {
   const { selectMarkdown } = useContext(MarkdownContext);
 
   return (
-    <div
-      className={`flex gap-2 items-center text-sm p-3 rounded-md dark:hover:bg-blue-500/20 
+    <li
+      className={`flex gap-2 items-center text-sm p-3 rounded-md dark:hover:bg-blue-500/20 cursor-pointer
         ${selected ? "bg-blue-500/20 " : ""}
     `}
       onClick={() => selectMarkdown(markdown)}
     >
       <AiOutlineFileText size={20} />
       <span>{markdown.filename}</span>
-    </div>
+    </li>
   );
 }
